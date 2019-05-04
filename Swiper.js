@@ -36,6 +36,15 @@ const rebuildStackAnimatedValues = (props) => {
 }
 
 class Swiper extends Component {
+
+  static getDerivedStateFromProps (props, state) {
+    return {
+      ...state,
+      ...calculateCardIndexes(props.cardIndex, props.cards),
+      cards: props.cards,
+    }
+  }
+
   constructor (props) {
     super(props)
 
@@ -138,8 +147,8 @@ class Swiper extends Component {
   createAnimatedEvent = () => {
     const { horizontalSwipe, verticalSwipe } = this.props
     const { x, y } = this.state.pan
-    const dx = horizontalSwipe ? x : 0
-    const dy = verticalSwipe ? y : 0
+    const dx = horizontalSwipe ? x : new Animated.Value(0)
+    const dy = verticalSwipe ? y : new Animated.Value(0)
     return { dx, dy }
   }
 
